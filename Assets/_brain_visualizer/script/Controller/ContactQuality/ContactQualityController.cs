@@ -17,7 +17,7 @@ namespace dirox.emotiv.controller
         ContactQualityBaseManager  activeDevice;
         ConnectionIndicatorGroup   connectionIndicatorGroup;
         //DataSubscriber dataSubscriber;
-        ExamplesBoard examplesBoard;
+        MainBoard mainBoard;
 
                 
         public Text displayText;
@@ -25,13 +25,13 @@ namespace dirox.emotiv.controller
         [Inject]
         public void SetDependencies (ConnectedDevice device, HeadsetGroup headsetGroup,
                                      ConnectionIndicatorGroup connectionIndicatorGroup,
-                                     ExamplesBoard board)
+                                     MainBoard board)
         {
             this.connectedDevice  = device;
             this.headsetGroup     = headsetGroup;
             this.connectionIndicatorGroup = connectionIndicatorGroup;
             // dataSubscriber = subscriber;
-            examplesBoard = board;
+            mainBoard = board;
         }
 
         public override void Activate ()
@@ -63,7 +63,7 @@ namespace dirox.emotiv.controller
         public void onButtonDone()
         {
             Deactivate();
-            examplesBoard.Activate();
+            mainBoard.Activate();
 
             // dataSubscriber.Activate();
             // connectionIndicatorGroup.Activate ();

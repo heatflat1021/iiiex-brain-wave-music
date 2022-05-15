@@ -30,8 +30,8 @@ namespace dirox.emotiv
         [Header ("Data Subscriber")]
         [SerializeField] DataSubscriber dataSubscriber;
 
-        [Header ("Examples Board")]
-        [SerializeField] ExamplesBoard examplesBoard;
+        [Header ("Main Board")]
+        [SerializeField] MainBoard mainBoard;
 
         [Header ("Markers Demo")]
         [SerializeField] MarkersDemo markersDemo;
@@ -42,7 +42,7 @@ namespace dirox.emotiv
             bindContactQuality ();
             bindIndicators ();
             bindCortexGroup();
-            bindExamplesBoard();
+            bindMainBoard();
             bindDataSubscriber();
             bindMarkersDemo();
         }
@@ -109,9 +109,9 @@ namespace dirox.emotiv
             Container.BindInstance(dataSubscriber);
         }
 
-        private void bindExamplesBoard()
+        private void bindMainBoard()
         {
-            Container.BindInstance(examplesBoard);
+            Container.BindInstance(mainBoard);
         }
 
         private void bindMarkersDemo()
