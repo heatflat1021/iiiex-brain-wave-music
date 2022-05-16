@@ -36,25 +36,12 @@ namespace dirox.emotiv.controller
 
             if (_dataStreamMgr.GetNumberEEGSamples() > 0)
             {
-                string eegHeaderStr = "EEG Header: ";
-                string eegDataStr = "EEG Data: ";
                 foreach (var channel in DataStreamManager.Instance.GetEEGChannels())
                 {
                     Debug.Log(channel);
                     double theta = DataStreamManager.Instance.GetAlphaData(channel);
                     Debug.Log(theta);
                 }
-/*                foreach (var ele in DataStreamManager.Instance.GetEEGChannels())
-                {
-                    string chanStr = ChannelStringList.ChannelToString(ele);
-                    double[] data = DataStreamManager.Instance.GetEEGData(ele);
-                    eegHeaderStr += chanStr + ", ";
-                    if (data != null && data.Length > 0)
-                        eegDataStr += data[0].ToString() + ", ";
-                    else
-                        eegDataStr += "null, "; // for null value
-                    Debug.Log(eegDataStr);
-                }*/
             }
         }
 
