@@ -13,7 +13,7 @@ namespace dirox.emotiv.controller
         private DataStreamManager _dataStreamMgr = DataStreamManager.Instance;
 
         private float _timerDataUpdate = 0;
-        private const float TIME_UPDATE_DATA = 0.3f;
+        private const float TIME_UPDATE_DATA = 0.4f;
 
         private readonly List<Channel_t> BandPowerTargetChannel = new List<Channel_t> {
             Channel_t.CHAN_AF3, Channel_t.CHAN_F7, Channel_t.CHAN_F3, Channel_t.CHAN_FC5, // ç∂ëOï˚
