@@ -12,9 +12,9 @@ public class SoundManager : MonoBehaviour
         sources = this.gameObject.GetComponents<AudioSource>();
     }
 
-    public void SoundStart(Channel_t channel, BandPowerType band)
+    public void SoundStart(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
     {
-        AudioSource targetAudioSource = SearchAudioSource(channel, band);
+        AudioSource targetAudioSource = SearchAudioSource(cerebrumArea, band);
         
         if (targetAudioSource == null)
         {
@@ -27,9 +27,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void SoundStop(Channel_t channel, BandPowerType band)
+    public void SoundStop(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
     {
-        AudioSource targetAudioSource = SearchAudioSource(channel, band);
+        AudioSource targetAudioSource = SearchAudioSource(cerebrumArea, band);
 
         if (targetAudioSource == null)
         {
@@ -45,14 +45,14 @@ public class SoundManager : MonoBehaviour
     /// <summary>
     /// Search for the desired AudioSource in sources. If it exists, return the AudioSource, otherwise return null.
     /// </summary>
-    /// <param name="channel"></param>
+    /// <param name="cerebrumArea"></param>
     /// <param name="band"></param>
     /// <returns></returns>
-    private AudioSource SearchAudioSource(Channel_t channel, BandPowerType band)
+    private AudioSource SearchAudioSource(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
     {
         foreach (AudioSource source in sources)
         {
-            if (!source.clip.name.Contains(ChannelStringList.ChannelToString(channel)))
+            if (!source.clip.name.Contains(CerebrumArea.ConvertCerebrumAreaTToString(cerebrumArea)))
             {
                 continue;
             }
