@@ -70,6 +70,7 @@ namespace dirox.emotiv.controller
 
                 foreach (var channel in BandPowerTargetChannels)
                 {
+                    Debug.Log(DataStreamManager.Instance.GetContactQuality(channel));
                     double theta = DataStreamManager.Instance.GetThetaData(channel);
                     double alpha = DataStreamManager.Instance.GetAlphaData(channel);
                     double betaL = DataStreamManager.Instance.GetLowBetaData(channel);
@@ -143,7 +144,7 @@ namespace dirox.emotiv.controller
                         }
                     }
 
-                    Debug.Log($"t:{thetaPowerValue}, a:{alphaPowerValue}, l:{betaLPowerValue}, h:{betaHPowerValue}");
+                    // Debug.Log($"t:{thetaPowerValue}, a:{alphaPowerValue}, l:{betaLPowerValue}, h:{betaHPowerValue}");
                 }
             }
         }

@@ -7,6 +7,8 @@ public class SoundManager : MonoBehaviour
 {
     private AudioSource[] sources;
 
+    private const float VolumeFadeOutAmount = 0.2f;
+
     void Start()
     {
         sources = this.gameObject.GetComponents<AudioSource>();
@@ -21,10 +23,13 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        if (!targetAudioSource.isPlaying)
+        if (targetAudioSource.isPlaying)
         {
-            targetAudioSource.Play();
+            return;
         }
+
+        targetAudioSource.volume = 1;
+        targetAudioSource.Play();
     }
 
     public void SoundStop(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
@@ -36,7 +41,16 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        if (targetAudioSource.isPlaying)
+        if (!targetAudioSource.isPlaying)
+        {
+            return;
+        }
+
+        if (VolumeFadeOutAmount < targetAudioSource.volume)
+        {
+            targetAudioSource.volume -= VolumeFadeOutAmount;
+        }
+        else
         {
             targetAudioSource.Stop();
         }
