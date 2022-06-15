@@ -7,15 +7,35 @@ public class SoundManager : MonoBehaviour
 {
     private AudioSource[] sources;
 
+    private const float VolumeFadeOutAmount = 0.2f;
+
     void Start()
     {
         sources = this.gameObject.GetComponents<AudioSource>();
     }
 
-    public void SoundStart(Channel_t channel, BandPowerType band)
+    public void SoundStart(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
     {
-        AudioSource targetAudioSource = SearchAudioSource(channel, band);
+        AudioSource targetAudioSource = SearchAudioSource(cerebrumArea, band);
         
+        if (targetAudioSource == null)
+        {
+            return;
+        }
+
+        if (targetAudioSource.isPlaying)
+        {
+            return;
+        }
+
+        targetAudioSource.volume = 1;
+        targetAudioSource.Play();
+    }
+
+    public void SoundStop(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
+    {
+        AudioSource targetAudioSource = SearchAudioSource(cerebrumArea, band);
+
         if (targetAudioSource == null)
         {
             return;
@@ -23,20 +43,14 @@ public class SoundManager : MonoBehaviour
 
         if (!targetAudioSource.isPlaying)
         {
-            targetAudioSource.Play();
-        }
-    }
-
-    public void SoundStop(Channel_t channel, BandPowerType band)
-    {
-        AudioSource targetAudioSource = SearchAudioSource(channel, band);
-
-        if (targetAudioSource == null)
-        {
             return;
         }
 
-        if (targetAudioSource.isPlaying)
+        if (VolumeFadeOutAmount < targetAudioSource.volume)
+        {
+            targetAudioSource.volume -= VolumeFadeOutAmount;
+        }
+        else
         {
             targetAudioSource.Stop();
         }
@@ -45,14 +59,14 @@ public class SoundManager : MonoBehaviour
     /// <summary>
     /// Search for the desired AudioSource in sources. If it exists, return the AudioSource, otherwise return null.
     /// </summary>
-    /// <param name="channel"></param>
+    /// <param name="cerebrumArea"></param>
     /// <param name="band"></param>
     /// <returns></returns>
-    private AudioSource SearchAudioSource(Channel_t channel, BandPowerType band)
+    private AudioSource SearchAudioSource(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
     {
         foreach (AudioSource source in sources)
         {
-            if (!source.clip.name.Contains(ChannelStringList.ChannelToString(channel)))
+            if (!source.clip.name.Contains(CerebrumArea.ConvertCerebrumAreaTToString(cerebrumArea)))
             {
                 continue;
             }
