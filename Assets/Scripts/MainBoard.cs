@@ -17,17 +17,19 @@ namespace dirox.emotiv.controller
         private const float TIME_UPDATE_DATA = 0.3f;
 
         private readonly List<Channel_t> BandPowerTargetChannels = new List<Channel_t> {
-            Channel_t.CHAN_AF3, Channel_t.CHAN_F7, Channel_t.CHAN_F3, Channel_t.CHAN_FC5, // ���O��
-            Channel_t.CHAN_T7, Channel_t.CHAN_P7, Channel_t.CHAN_O1, // �����
-            Channel_t.CHAN_AF4, Channel_t.CHAN_F8, Channel_t.CHAN_F4, Channel_t.CHAN_FC6, // �E�O��
-            Channel_t.CHAN_T8, Channel_t.CHAN_P8, Channel_t.CHAN_O2, // �E���
+            Channel_t.CHAN_AF3, Channel_t.CHAN_F7, Channel_t.CHAN_F3, Channel_t.CHAN_FC5,
+            Channel_t.CHAN_T7, Channel_t.CHAN_P7, Channel_t.CHAN_O1,
+            Channel_t.CHAN_AF4, Channel_t.CHAN_F8, Channel_t.CHAN_F4, Channel_t.CHAN_FC6,
+            Channel_t.CHAN_T8, Channel_t.CHAN_P8, Channel_t.CHAN_O2,
         };
 
         private readonly List<CerebrumArea.CerebrumArea_t> TargetCerebrumAreas = new List<CerebrumArea.CerebrumArea_t> {
             CerebrumArea.CerebrumArea_t.LEFT_OUTER,
+            CerebrumArea.CerebrumArea_t.LEFT_MIDDLE,
             CerebrumArea.CerebrumArea_t.LEFT_CENTER,
-            CerebrumArea.CerebrumArea_t.RIGHT_OUTER,
             CerebrumArea.CerebrumArea_t.RIGHT_CENTER,
+            CerebrumArea.CerebrumArea_t.RIGHT_MIDDLE,
+            CerebrumArea.CerebrumArea_t.RIGHT_OUTER,
         };
 
         private GroupedSignals groupedSignals;
