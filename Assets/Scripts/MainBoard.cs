@@ -312,7 +312,7 @@ namespace dirox.emotiv.controller
                     y = -4;
                     break;
             }
-            return new Vector3(x * ElectrodeDistanceX, y * ElectrodeDistanceY, 0);
+            return new Vector3(x * ElectrodeDistanceX, y * ElectrodeDistanceY, -1);
         }
     }
 }

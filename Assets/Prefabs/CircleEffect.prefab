@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8652907328401836099}
   - component: {fileID: 175116339634061566}
   - component: {fileID: 175116339634061567}
+  - component: {fileID: -8251079652026806804}
   m_Layer: 5
   m_Name: CircleEffect
   m_TagString: Untagged
@@ -102,3 +103,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb30a72d05f24171aee451ee0d5f966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!222 &-8251079652026806804
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175116339634061536}
+  m_CullTransparentMesh: 1

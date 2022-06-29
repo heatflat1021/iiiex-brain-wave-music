@@ -665,6 +665,8 @@ MonoBehaviour:
     type: 3}
   electrodeShadow: {fileID: 1317727067726094168, guid: 791b0f11ffb3b4a97aff26cdc0b4c124,
     type: 3}
+  circleEffect: {fileID: 175116339634061536, guid: 353e326cb45ba46a1a3bf917ce625844,
+    type: 3}
   soundGameObject: {fileID: 1173164583}
 --- !u!1 &165828300
 GameObject:
