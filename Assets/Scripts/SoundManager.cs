@@ -11,6 +11,10 @@ public class SoundManager : MonoBehaviour
 
     private const float VolumeFadeOutAmount = 0.2f;
 
+    private const float BetaHSoundVolume = 0.6f;
+    private const float BetaLSoundVolume = 0.8f;
+    private const float AlphaAndThetaSoundVolume = 1.0f;
+
     void Start()
     {
         sources = this.gameObject.GetComponents<AudioSource>();
@@ -30,11 +34,8 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        targetAudioSource.volume = 1;
+        targetAudioSource.volume = (band == BandPowerType.BetalH) ? BetaHSoundVolume : (band == BandPowerType.BetalL) ? BetaLSoundVolume : AlphaAndThetaSoundVolume;
         targetAudioSource.Play();
-
-        // Vector2 worldPos = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
-        // Object.Instantiate(mTapEffect, worldPos, Quaternion.identity, transform);
     }
 
     public void SoundStop(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
