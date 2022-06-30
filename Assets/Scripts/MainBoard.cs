@@ -17,6 +17,8 @@ namespace dirox.emotiv.controller
         public GameObject centerCircle;
 
         public GameObject electrode;
+        public GameObject electrodeOrange;
+        public GameObject electrodeSkyBlue;
         public GameObject electrodeShadow;
         public GameObject circleEffect;
         public GameObject pentagonEffect;
@@ -63,7 +65,7 @@ namespace dirox.emotiv.controller
 
         private static readonly Color ColorOrange = new Color(255, 109, 0, 1.0f);
         private static readonly Color ColorOrangeLight = new Color(255, 109, 0, 0.2f);
-        private static readonly Color ColorSkyBlue = new Color(0, 183, 206, 0.2f);
+        private static readonly Color ColorSkyBlue = new Color(0, 183, 206, 0.4f);
 
         private static readonly int ElectrodeDistanceX = 50;
         private static readonly int ElectrodeDistanceY = 50;
@@ -110,10 +112,27 @@ namespace dirox.emotiv.controller
                         electrodeShadowObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                         electrodeShadowObject.GetComponent<Image>().color = (x < 0) ? new Color(0, 183, 206, 0.2f) : new Color(253, 126, 0, 0.2f);
 
-                        GameObject electrodeObject = (GameObject)Instantiate(electrode, electrodeComponents.transform);
-                        electrodeObject.transform.localPosition = new Vector3(x * ElectrodeDistanceX, y * ElectrodeDistanceY, 0);
-                        electrodeObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                        electrodeObject.GetComponent<Image>().color = new Color(30, 30, 30);
+                        if ((x==-7 && y==4) || (x==-4 && y==5) || (x==-7 && y==2) || (x==-4 && y==2) || (x==-9 && y==-1) || (x==-6 && y==-3) || (x==-3 && y==-5))
+                        {
+                            GameObject electrodeObject = (GameObject)Instantiate(electrodeSkyBlue, electrodeComponents.transform);
+                            electrodeObject.transform.localPosition = new Vector3(x * ElectrodeDistanceX, y * ElectrodeDistanceY, 0);
+                            electrodeObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                            electrodeObject.GetComponent<Image>().color = new Color(30, 30, 30);
+                        }
+                        else if ((x == 7 && y == 4) || (x == 4 && y == 5) || (x == 7 && y == 2) || (x == 4 && y == 2) || (x == 9 && y == -1) || (x == 6 && y == -3) || (x == 3 && y == -5))
+                        {
+                            GameObject electrodeObject = (GameObject)Instantiate(electrodeOrange, electrodeComponents.transform);
+                            electrodeObject.transform.localPosition = new Vector3(x * ElectrodeDistanceX, y * ElectrodeDistanceY, 0);
+                            electrodeObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                            electrodeObject.GetComponent<Image>().color = new Color(30, 30, 30);
+                        }
+                        else
+                        {
+                            GameObject electrodeObject = (GameObject)Instantiate(electrode, electrodeComponents.transform);
+                            electrodeObject.transform.localPosition = new Vector3(x * ElectrodeDistanceX, y * ElectrodeDistanceY, 0);
+                            electrodeObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                            electrodeObject.GetComponent<Image>().color = new Color(30, 30, 30);
+                        }
                     }
                 }
 
