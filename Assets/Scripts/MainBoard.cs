@@ -12,6 +12,10 @@ namespace dirox.emotiv.controller
     /// </summary>
     public class MainBoard : BaseCanvasView
     {
+        public GameObject eegButton;
+
+        public GameObject centerCircle;
+
         public GameObject electrode;
         public GameObject electrodeShadow;
         public GameObject circleEffect;
@@ -55,8 +59,10 @@ namespace dirox.emotiv.controller
 
         private GameObject electrodeComponents;
         private GameObject waveComponents;
+        private GameObject centerComponents;
 
-        private static readonly Color ColorOrange = new Color(253, 126, 0, 0.2f);
+        private static readonly Color ColorOrange = new Color(255, 109, 0, 1.0f);
+        private static readonly Color ColorOrangeLight = new Color(255, 109, 0, 0.2f);
         private static readonly Color ColorSkyBlue = new Color(0, 183, 206, 0.2f);
 
         private static readonly int ElectrodeDistanceX = 50;
@@ -79,6 +85,7 @@ namespace dirox.emotiv.controller
 
             electrodeComponents = transform.Find("ViewComponents/ElectrodeComponents").gameObject;
             waveComponents = transform.Find("ViewComponents/WaveComponents").gameObject;
+            centerComponents = transform.Find("ViewComponents/CenterComponents").gameObject;
         }
 
 
@@ -95,7 +102,7 @@ namespace dirox.emotiv.controller
                 {
                     for (int y=-6; y<=6; y++)
                     {
-                        if ((x == 0) || ((-3 <= x && x <= 3) && (-3 <= y && y <= 3) && !(x == -3 && y == -3) && !(x == -3 && y == 3) && !(x == 3 && y == -3) && !(x == 3 && y == 3)))
+                        if ((x == 10 && y == 6) || (x == 9 && y == 6) || (x == 0) || ((-3 <= x && x <= 3) && (-3 <= y && y <= 3) && !(x == -3 && y == -3) && !(x == -3 && y == 3) && !(x == 3 && y == -3) && !(x == 3 && y == 3)))
                             continue;
 
                         GameObject electrodeShadowObject = (GameObject)Instantiate(electrodeShadow, electrodeComponents.transform);
@@ -164,13 +171,13 @@ namespace dirox.emotiv.controller
                     {
                         GameObject squareObject = (GameObject)Instantiate(squareEffect, waveComponents.transform);
                         squareObject.transform.localPosition = GetCirclePosition(channel);
-                        squareObject.transform.GetComponent<Image>().color = ColorOrange;
+                        squareObject.transform.GetComponent<Image>().color = ColorOrangeLight;
                     }
                     else if (betaH > CircleGenerationThreshold)
                     {
                         GameObject triangleObject = (GameObject)Instantiate(triangleEffect, waveComponents.transform);
                         triangleObject.transform.localPosition = GetCirclePosition(channel);
-                        triangleObject.transform.GetComponent<Image>().color = ColorOrange;
+                        triangleObject.transform.GetComponent<Image>().color = ColorOrangeLight;
                     }
                 }
 
@@ -275,6 +282,12 @@ namespace dirox.emotiv.controller
         {
             List<string> dataStreamList = new List<string>() { DataStreamName.EEG, DataStreamName.BandPower };
             _dataStreamMgr.SubscribeMoreData(dataStreamList);
+
+            eegButton.SetActive(false);
+
+            GameObject centerCircleObject = (GameObject)Instantiate(centerCircle, centerComponents.transform);
+            centerCircleObject.transform.localPosition = new Vector3(0, -40, 0);
+            centerCircleObject.transform.GetComponent<Image>().color = new Color(255, 109, 0, 1.0f);
         }
 
         public void onStopBtnClick()
