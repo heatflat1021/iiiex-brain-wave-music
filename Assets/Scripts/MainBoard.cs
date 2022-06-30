@@ -283,6 +283,9 @@ namespace dirox.emotiv.controller
                     wave.GetComponent<Image>().color = new Color(color.r, color.g, color.b, color.a * CircleOpacityDecreasingRate);
                 }
             }
+
+            GameObject centerCircle = centerComponents.transform.Find("CenterCircle(Clone)").gameObject;
+            centerCircle.transform.Rotate(new Vector3(0, 0, -5));
         }
 
         public override void Activate()
@@ -306,6 +309,7 @@ namespace dirox.emotiv.controller
 
             GameObject centerCircleObject = (GameObject)Instantiate(centerCircle, centerComponents.transform);
             centerCircleObject.transform.localPosition = new Vector3(0, -40, 0);
+            centerCircleObject.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             centerCircleObject.transform.GetComponent<Image>().color = new Color(255, 109, 0, 1.0f);
         }
 
