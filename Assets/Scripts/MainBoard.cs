@@ -15,6 +15,9 @@ namespace dirox.emotiv.controller
         public GameObject electrode;
         public GameObject electrodeShadow;
         public GameObject circleEffect;
+        public GameObject pentagonEffect;
+        public GameObject squareEffect;
+        public GameObject triangleEffect;
 
         private DataStreamManager _dataStreamMgr = DataStreamManager.Instance;
 
@@ -50,13 +53,22 @@ namespace dirox.emotiv.controller
         public GameObject soundGameObject;
         private SoundManager soundManager;
 
-        private static readonly int ElectrodeDistanceX = 60;
-        private static readonly int ElectrodeDistanceY = 60;
+        private GameObject electrodeComponents;
+        private GameObject waveComponents;
+
+        private static readonly Color ColorOrange = new Color(253, 126, 0, 0.2f);
+        private static readonly Color ColorSkyBlue = new Color(0, 183, 206, 0.2f);
+
+        private static readonly int ElectrodeDistanceX = 50;
+        private static readonly int ElectrodeDistanceY = 50;
         private static readonly int ElectrodeShadowGapX = 1;
         private static readonly int ElectrodeShadowGapY = 1;
 
         private bool isInitialized = false;
-        private float CircleGenerationThreshold = 1.7f;
+        private const float CircleGenerationThreshold = 1.7f;
+        private const float CircleScaleMaxMagnitude = 8.0f;
+        private const float CircleScaleIncreasingRate = 1.08f;
+        private const float CircleOpacityDecreasingRate = 0.92f;
 
         void Start()
         {
@@ -64,6 +76,9 @@ namespace dirox.emotiv.controller
             contactQualityHistory = new ContactQualityHistory();
 
             soundManager = soundGameObject.GetComponent<SoundManager>();
+
+            electrodeComponents = transform.Find("ViewComponents/ElectrodeComponents").gameObject;
+            waveComponents = transform.Find("ViewComponents/WaveComponents").gameObject;
         }
 
 
@@ -83,12 +98,12 @@ namespace dirox.emotiv.controller
                         if ((x == 0) || ((-3 <= x && x <= 3) && (-3 <= y && y <= 3) && !(x == -3 && y == -3) && !(x == -3 && y == 3) && !(x == 3 && y == -3) && !(x == 3 && y == 3)))
                             continue;
 
-                        GameObject electrodeShadowObject = (GameObject)Instantiate(electrodeShadow, transform);
+                        GameObject electrodeShadowObject = (GameObject)Instantiate(electrodeShadow, electrodeComponents.transform);
                         electrodeShadowObject.transform.localPosition = new Vector3(x * (ElectrodeDistanceX + ElectrodeShadowGapX), y * (ElectrodeDistanceY + ElectrodeShadowGapY), 0);
                         electrodeShadowObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                         electrodeShadowObject.GetComponent<Image>().color = (x < 0) ? new Color(0, 183, 206, 0.2f) : new Color(253, 126, 0, 0.2f);
 
-                        GameObject electrodeObject = (GameObject)Instantiate(electrode, transform);
+                        GameObject electrodeObject = (GameObject)Instantiate(electrode, electrodeComponents.transform);
                         electrodeObject.transform.localPosition = new Vector3(x * ElectrodeDistanceX, y * ElectrodeDistanceY, 0);
                         electrodeObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                         electrodeObject.GetComponent<Image>().color = new Color(30, 30, 30);
@@ -135,31 +150,27 @@ namespace dirox.emotiv.controller
 
                     if (theta > CircleGenerationThreshold)
                     {
-                        Object.Instantiate(circleEffect, GetCirclePosition(channel), Quaternion.identity, transform);
-                        // GameObject circleObject = (GameObject)Instantiate(circleEffect, transform);
-                        // circleObject.transform.localPosition = GetCirclePosition(channel);
-                        // circleObject.GetComponent<Image>().color = new Color(30, 30, 30);
+                        GameObject circleObject = (GameObject)Instantiate(circleEffect, waveComponents.transform);
+                        circleObject.transform.localPosition = GetCirclePosition(channel);
+                        circleObject.transform.GetComponent<Image>().color = ColorSkyBlue;
                     }
                     else if (alpha > CircleGenerationThreshold)
                     {
-                        Object.Instantiate(circleEffect, GetCirclePosition(channel), Quaternion.identity, transform);
-                        // GameObject circleObject = (GameObject)Instantiate(circleEffect, transform);
-                        // circleObject.transform.localPosition = GetCirclePosition(channel);
-                        // circleObject.GetComponent<Image>().color = new Color(30, 30, 30);
+                        GameObject pentagonObject = (GameObject)Instantiate(pentagonEffect, waveComponents.transform);
+                        pentagonObject.transform.localPosition = GetCirclePosition(channel);
+                        pentagonObject.transform.GetComponent<Image>().color = ColorSkyBlue;
                     }
                     else if (betaL > CircleGenerationThreshold)
                     {
-                        Object.Instantiate(circleEffect, GetCirclePosition(channel), Quaternion.identity, transform);
-                        // GameObject circleObject = (GameObject)Instantiate(circleEffect, transform);
-                        // circleObject.transform.localPosition = GetCirclePosition(channel);
-                        // circleObject.GetComponent<Image>().color = new Color(30, 30, 30);
+                        GameObject squareObject = (GameObject)Instantiate(squareEffect, waveComponents.transform);
+                        squareObject.transform.localPosition = GetCirclePosition(channel);
+                        squareObject.transform.GetComponent<Image>().color = ColorOrange;
                     }
                     else if (betaH > CircleGenerationThreshold)
                     {
-                        Object.Instantiate(circleEffect, GetCirclePosition(channel), Quaternion.identity, transform);
-                        // GameObject circleObject = (GameObject)Instantiate(circleEffect, transform);
-                        // circleObject.transform.localPosition = GetCirclePosition(channel);
-                        // circleObject.GetComponent<Image>().color = new Color(30, 30, 30);
+                        GameObject triangleObject = (GameObject)Instantiate(triangleEffect, waveComponents.transform);
+                        triangleObject.transform.localPosition = GetCirclePosition(channel);
+                        triangleObject.transform.GetComponent<Image>().color = ColorOrange;
                     }
                 }
 
@@ -221,8 +232,29 @@ namespace dirox.emotiv.controller
                             soundManager.SoundStop(cerebrumArea, BandPowerType.BetalH);
                         }
                     }
+                }
+            }
 
-                    // Debug.Log($"t:{thetaPowerValue}, a:{alphaPowerValue}, l:{betaLPowerValue}, h:{betaHPowerValue}");
+            var waves = new Transform[waveComponents.transform.childCount];
+            for (int i=0; i<waves.Length; i++)
+            {
+                waves[i] = waveComponents.transform.GetChild(i);
+            }
+
+            foreach(Transform wave in waves)
+            {
+                Vector3 scale = wave.localScale;
+
+                if (scale.magnitude > CircleScaleMaxMagnitude)
+                {
+                    Destroy(wave.gameObject);
+                }
+                else
+                {
+                    wave.localScale = scale * CircleScaleIncreasingRate;
+
+                    Color color = wave.GetComponent<Image>().color;
+                    wave.GetComponent<Image>().color = new Color(color.r, color.g, color.b, color.a * CircleOpacityDecreasingRate);
                 }
             }
         }
@@ -256,60 +288,60 @@ namespace dirox.emotiv.controller
             switch (channel)
             {
                 case Channel_t.CHAN_AF3:
-                    x = -6;
-                    y = 5;
+                    x = -7;
+                    y = 4;
                     break;
                 case Channel_t.CHAN_F7:
                     x = -4;
-                    y = 6;
+                    y = 5;
                     break;
                 case Channel_t.CHAN_F3:
-                    x = -6;
-                    y = 3;
+                    x = -7;
+                    y = 2;
                     break;
                 case Channel_t.CHAN_FC5:
                     x = -4;
-                    y = 3;
+                    y = 2;
                     break;
                 case Channel_t.CHAN_T7:
-                    x = -7;
-                    y = 0;
+                    x = -9;
+                    y = -1;
                     break;
                 case Channel_t.CHAN_P7:
-                    x = 5;
-                    y = -2;
+                    x = -6;
+                    y = -3;
                     break;
                 case Channel_t.CHAN_O1:
-                    x = 3;
-                    y = -4;
+                    x = -3;
+                    y = -5;
                     break;
                 case Channel_t.CHAN_AF4:
-                    x = 6;
-                    y = 5;
+                    x = 7;
+                    y = 4;
                     break;
                 case Channel_t.CHAN_F8:
                     x = 4;
-                    y = 6;
+                    y = 5;
                     break;
                 case Channel_t.CHAN_F4:
-                    x = 6;
-                    y = 3;
+                    x = 7;
+                    y = 2;
                     break;
                 case Channel_t.CHAN_FC6:
                     x = 4;
-                    y = 3;
+                    y = 2;
                     break;
                 case Channel_t.CHAN_T8:
-                    x = 7;
-                    y = 0;
+                    x = 9;
+                    y = -1;
                     break;
                 case Channel_t.CHAN_P8:
-                    x = -5;
-                    y = -2;
+                    x = 6;
+                    y = -3;
                     break;
                 case Channel_t.CHAN_O2:
-                    x = -3;
-                    y = -4;
+                    x = 3;
+                    y = -5;
                     break;
             }
             return new Vector3(x * ElectrodeDistanceX, y * ElectrodeDistanceY, -1);
