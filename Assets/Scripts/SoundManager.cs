@@ -5,6 +5,8 @@ using EmotivUnityPlugin;
 
 public class SoundManager : MonoBehaviour
 {
+    public GameObject mTapEffect;
+
     private AudioSource[] sources;
 
     private const float VolumeFadeOutAmount = 0.2f;
@@ -30,6 +32,9 @@ public class SoundManager : MonoBehaviour
 
         targetAudioSource.volume = 1;
         targetAudioSource.Play();
+
+        // Vector2 worldPos = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
+        // Object.Instantiate(mTapEffect, worldPos, Quaternion.identity, transform);
     }
 
     public void SoundStop(CerebrumArea.CerebrumArea_t cerebrumArea, BandPowerType band)
